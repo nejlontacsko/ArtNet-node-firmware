@@ -3,8 +3,7 @@
 vector<HotSpot> hotspots;
 int hotspot_count, selected = 0, nextSelected = 0, ipPos = 1, passPos = 1;
 IPAddress staticIp(192, 168, 1, 250), subnetMask(255, 255, 255, 0), gateway(0, 0, 0, 0);
-//char buf[17] = "\0", pass[13] = "~~~~~~~~~~~\0";
-char buf[17] = "\0", pass[13] = "11783360\0";
+char buf[17] = "\0", pass[13] = "********\0";
 bool doneIp = false, ipUpdate = false, donePass = false, passUpdate = false, wantDhcp = true;
 
 void arrow(bool showUp, bool showDown, Lcd595 lcd)
@@ -116,7 +115,6 @@ void navigateMenu(MenuState menuState, MenuState *nextMenuState, Button pressed,
       }
       break;
     case REQUEST:
-      //network communications, than
       if (pressed == ENTER)
           *nextMenuState = IPCONF;
       break;
@@ -185,8 +183,6 @@ void navigateMenu(MenuState menuState, MenuState *nextMenuState, Button pressed,
             if(pass[passPos - 1] == 0x7F)
             {
               pass[passPos - 1] = '\0';
-              //for (int i = passPos - 1; i < MAX_PASS_LENGTH; i++)
-              //    pass[i] = '\0';
               donePass = true;
             }
             passPos++;
@@ -402,51 +398,6 @@ void stateMachineMenu(MenuState *menuState, MenuState nextMenuState, Lcd595 lcd)
       }
       break;
     case REQUEST:
-      /*if (wantDhcp)
-          WiFi.begin(hotspots[selected].getSsid(), pass);
-      else
-      {
-          if (WiFi.status() != WL_CONNECTED)
-          {
-              WiFi.config(staticIp, gateway, subnetMask);
-              
-          }
-          else
-          {
-              lcd.write("   Trying to", "    setup...");
-              WiFi.disconnect();
-              WiFi.config(staticIp, gateway, subnetMask);
-              WiFi.mode(WIFI_STA);
-              WiFi.setSleepMode(WIFI_NONE_SLEEP);
-              wifi_set_sleep_type(NONE_SLEEP_T);
-              WiFi.begin(hotspots[selected].getSsid(), pass);
-              switch (WiFi.waitForConnectResult())
-              {
-                  case WL_CONNECTED:
-                    lcd.write("Finished. Press ", "  ENTER to exit!");
-                    break;
-                  case WL_NO_SSID_AVAIL:
-                    lcd.write("AP cannot be", "    reached!");
-                    break;
-                  case WL_CONNECT_FAILED:
-                    lcd.write("   Incorrect", "   password!");
-                    break;
-                  case WL_IDLE_STATUS:
-                    lcd.write("   WiFi is in", "  IDLE status!");
-                    delay(2000);
-                    nextMenuState = RESET;
-                    break;
-                  case WL_DISCONNECTED:
-                    lcd.write(" Module not in station mode");
-                    delay(2000);
-                    nextMenuState = RESTART;
-                    break;
-                  case -1:
-                    lcd.write("   Connection", "    timeout!");
-                    break;
-              }
-          }
-      }*/
       lcd.write("Finished. Press ", "  ENTER to exit!");
       break;
     #pragma endregion MenuItem0
@@ -541,18 +492,6 @@ void stateMachineMenu(MenuState *menuState, MenuState nextMenuState, Lcd595 lcd)
           lcd.write("   Connection", "    timeout!");
           break;
       }
-      /*WiFi.mode(WIFI_STA);
-      WiFi.setSleepMode(WIFI_NONE_SLEEP);
-      wifi_set_sleep_type(NONE_SLEEP_T);
-      WiFi.setAutoReconnect(true);
-      WiFi.begin(hotspots[selected].getSsid(), pass);
-      lcd.write("Connecting...");
-      while(WiFi.status() != WL_CONNECTED) {
-        yield();
-      }
-      lcd.write("   Connection", "  established!");
-      delay(1500);
-      lcd.write("Press ENTER to", " continue!");*/
       break;
     break;
     case SAVE_PASS_YES: //TODO!!
